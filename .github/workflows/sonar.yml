@@ -28,6 +28,13 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
+      # Cài đặt SonarScanner
+      - name: Install SonarScanner
+        run: |
+          curl -sSLo sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip
+          unzip sonar-scanner-cli.zip
+          export PATH="$PATH:$(pwd)/sonar-scanner-4.7.0.2747-linux/bin"
+        
       - name: Run SonarCloud analysis
         run: |
           sonar-scanner \
