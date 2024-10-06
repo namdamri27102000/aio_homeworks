@@ -20,6 +20,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '11'
+          distribution: 'temurin'  # Bạn cần bổ sung dòng này để chỉ rõ phiên bản JDK
 
       - name: Cache SonarCloud packages
         uses: actions/cache@v3
