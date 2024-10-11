@@ -56,5 +56,4 @@ plt.plot(losses[:500])
 sgd_theta, losses = stochastic_gradient_descent(X_b, y, epochs=1, lr=0.01)
 print('question 1: ', np.sum(losses)) # 8392.629213 => C
 
-def mini
 plt.show()
