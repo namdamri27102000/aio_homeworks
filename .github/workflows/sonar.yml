@@ -1,4 +1,4 @@
-name: SonarCloud
+name: SonarCloud with PEP8 Check
 
 on:
   push:
@@ -18,27 +18,31 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      # Set up Python environment
       - name: Set up Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4  # Using the latest version
         with:
-          python-version: '3.x'
+          python-version: '3.x'  # Specify your Python version
 
+      # Install dependencies
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      # Cài đặt SonarScanner
-      - name: Install SonarScanner
+      # PEP8 Linting using flake8
+      - name: Lint with flake8
         run: |
-          curl -sSLo sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip
-          unzip sonar-scanner-cli.zip
-          export PATH="$PATH:$(pwd)/sonar-scanner-4.7.0.2747-linux/bin"
-        
-      - name: Run SonarCloud analysis
-        run: |
-          sonar-scanner \
-            -Dsonar.projectKey=namdamri27102000_aio_homeworks \
-            -Dsonar.organization=namdamri27102000 \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+          python -m pip install flake8
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+      # SonarCloud Scan using GitHub Action from the Marketplace
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2
+        with:
+          args: >
+            -Dsonar.projectKey=namdamri27102000_aio_homeworks
+            -Dsonar.organization=namdamri27102000
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
