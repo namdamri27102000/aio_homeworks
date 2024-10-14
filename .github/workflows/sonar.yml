@@ -46,7 +46,3 @@ jobs:
             -Dsonar.organization=namdamri27102000
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-<<<<<<< HEAD
-=======
-
->>>>>>> c4bc534e17bee521e7e4995587505238c788ab84
